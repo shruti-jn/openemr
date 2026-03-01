@@ -1,0 +1,6 @@
+AgentForge AI Chat - 1.0.0
+Adds an AI assistant chat widget to the patient demographics page.
+Providers can ask natural-language questions about patient records,
+medications, and appointments directly from the patient summary view.
+
+Requires the AgentForge FastAPI service to be running (default: http://localhost:9010).
