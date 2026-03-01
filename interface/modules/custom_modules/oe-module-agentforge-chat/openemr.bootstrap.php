@@ -18,10 +18,14 @@
  *   $eventDispatcher   – Symfony\Component\EventDispatcher\EventDispatcherInterface
  */
 
-$classLoader->registerNamespaceIfNotExists(
-    'OpenEMR\\Modules\\AgentForgeChat\\',
-    __DIR__ . DIRECTORY_SEPARATOR . 'src'
-);
+try {
+    $classLoader->registerNamespaceIfNotExists(
+        'OpenEMR\\Modules\\AgentForgeChat\\',
+        __DIR__ . DIRECTORY_SEPARATOR . 'src'
+    );
 
-$bootstrap = new \OpenEMR\Modules\AgentForgeChat\Bootstrap($eventDispatcher);
-$bootstrap->subscribeToEvents();
+    $bootstrap = new \OpenEMR\Modules\AgentForgeChat\Bootstrap($eventDispatcher);
+    $bootstrap->subscribeToEvents();
+} catch (\Throwable $e) {
+    error_log('[AgentForge] Module bootstrap failed: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+}

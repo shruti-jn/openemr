@@ -76,22 +76,26 @@ class AgentForgeChatCard extends CardModel
     {
         global $GLOBALS;
 
-        $agentUrl = $GLOBALS['agentforge_url'] ?? self::DEFAULT_AGENT_URL;
+        $agentUrl = getenv('AGENTFORGE_URL') ?: ($GLOBALS['agentforge_url'] ?? self::DEFAULT_AGENT_URL);
         $iframeHeight = (int) ($GLOBALS['agentforge_iframe_height'] ?? self::DEFAULT_IFRAME_HEIGHT);
 
         $baseUrl = rtrim($agentUrl, '/');
 
         // Build the embed URL with query params so the React frontend
         // can: (a) hide the sidebar, and (b) know which patient to scope to.
+        // data_source=db ensures patient lookup uses direct DB query (FHIR API
+        // uses UUIDs, not integer pids, so direct /fhir/Patient/{pid} fails).
         $embedUrl = $baseUrl . '?' . http_build_query([
-            'embed' => '1',
-            'pid'   => $this->pid,
+            'embed'       => '1',
+            'pid'         => $this->pid,
+            'data_source' => 'db',
         ]);
 
         // Standalone URL preserves patient context but omits the embed flag
         // so the full UI (sidebar, etc.) is shown when opened in a new window.
         $newWindowUrl = $baseUrl . '?' . http_build_query([
-            'pid' => $this->pid,
+            'pid'         => $this->pid,
+            'data_source' => 'db',
         ]);
 
         return [
