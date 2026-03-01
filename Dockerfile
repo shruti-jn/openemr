@@ -1,5 +1,5 @@
-# Use official OpenEMR flex image as base (includes PHP, Apache, OpenEMR)
-FROM openemr/openemr:flex
+# Use official OpenEMR production image (matches docker/production/docker-compose.yml)
+FROM openemr/openemr:7.0.4
 
 # Copy the AgentForge custom module files into the container
 COPY --chown=apache:apache interface/modules/custom_modules/ /var/www/localhost/htdocs/openemr/interface/modules/custom_modules/
